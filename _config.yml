@@ -1,0 +1,10 @@
+# Site settings
+title: ZhouYang's blog.
+email: halo.chou@gmail.com
+description: "Here's Zhou Yang's personal blog which records some technology contents."
+baseurl: ""
+url: "http://halochou.github.io"
+
+# Build settings
+markdown: kramdown
+permalink: pretty

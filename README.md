@@ -1,4 +1,4 @@
 halochou.github.com
 ===================
 
-my blog
+ZhouYang's blog based on Jekyll and GitHub pages.
