@@ -4,6 +4,8 @@ email: halo.chou@gmail.com
 description: "Here's Zhou Yang's personal blog which records some technology contents."
 baseurl: ""
 url: "http://halochou.github.io"
+username: halochou
+
 
 # Build settings
 markdown: kramdown
