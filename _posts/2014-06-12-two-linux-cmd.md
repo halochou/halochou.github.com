@@ -6,7 +6,9 @@ tags: [linux]
 
 ---
 Get two interesting linux command from this [article](http://jianshu.io/p/5ca890e5bdbf).
+
 1. strings
+
 		NAME
 		       strings - find the printable strings in a object, or other binary, file
 
@@ -24,6 +26,7 @@ Get two interesting linux command from this [article](http://jianshu.io/p/5ca890
 		       read.
 
 2. od
+
 		NAME
 		     od -- octal, decimal, hex, ASCII dump
 
