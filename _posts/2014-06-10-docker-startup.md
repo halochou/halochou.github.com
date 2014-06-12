@@ -21,12 +21,20 @@ To understand Docker's internals, you need to know about three components:
 
 - Docker images.
 
-	> A Docker image is a read-only template. For example, an image could contain an Ubuntu operating system with Apache and your web application installed. Images are used to create Docker containers. Docker provides a simple way to build new images or update existing images, or you can download Docker images that other people have already created. Docker images are the build component of Docker.
+		- Frozen filesystem , read-only.
+		- Used to create container by running command inside.
+		- Can be generated from `Dockerfile`.
+		- But no way to generate `Dockerfile` from image.
 
 - Docker registries.
+
+		- Repository of pre-build images
+
 - Docker containers.
 
-	> Docker containers are similar to a directory. A Docker container holds everything that is needed for an application to run. Each container is created from a Docker image. Docker containers can be run, started, stopped, moved, and deleted. Each container is an isolated and secure application platform. Docker containers are the run component of Docker.
+		- Instance of command running in image.
+		- Stoped after command exited but not removed.
+		- Can be converted to image.
 
 ##Usage
 - Search images on Docker Hub.
@@ -43,21 +51,23 @@ To understand Docker's internals, you need to know about three components:
 
 - Start a interactive session in a new container.
 
-		$ docker run -i -t ubuntu /bin/bash
+		$ docker run -i -t ubuntu /bin/bash # the container will be stoped after exited but can be resume
 	-t: tty  -i: interactive
 
 - Start a new container as daemon/detached.
 
-		$ docker run -d ubuntu
+		$ docker run -d ubuntu /bin/bash
 
-- List runing/exited container.
+- List container.
 
-		$ docker ps
-		$ docker ps -l
+		$ docker ps # show running container
+		$ docker ps -l # show latest container including stoped
+		$ docker ps -a # show all container
 
 - Save a container to new images
 
 		$ docker commit <containerID> <newImageName>
+
 - Upload image to Docker Hub Registry.
 
 		$ docker push <imageName>
