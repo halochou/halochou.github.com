@@ -1,11 +1,17 @@
 ---
 layout: page
-title: About
-permalink: /about/
+permalink: /about/index.html
+title: About Me
+tags: [about, blog]
+modified: 1-13-2013
+image:
+  feature: background.jpg
+  credit: HeavenlyDeamonic
+  creditlink: http://heavenlydeamonic.deviantart.com/art/Sp92-426528365
 ---
 
 * Zhou Yang
 * Male
 * Engineer on IBM AIX & Power Platform.
 * Geek
-* Linux OSX iOS Python
+* *nix, Python 
