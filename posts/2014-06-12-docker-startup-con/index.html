@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Yang Zhou">
+    <meta name="description" content="Yang Zhou&#39;s personal website">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <base href="http://halochou.github.io">
+    <title>
+  Docker Quick Tour (con.) · Yang Zhou
+</title>
+
+    <link rel="canonical" href="http://halochou.github.io/posts/2014-06-12-docker-startup-con/">
+
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:400,700">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="http://halochou.github.io/css/style.min.css">
+
+    <link rel="icon" type="image/png" href="http://halochou.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://halochou.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    
+
+    <meta name="generator" content="Hugo 0.39" />
+  </head>
+
+  <body>
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://halochou.github.io/">
+      Yang Zhou
+    </a>
+    
+    <ul class="navigation-list float-right">
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="http://halochou.github.io/posts/">Blog</a>
+      </li>
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="http://halochou.github.io/about/">About</a>
+      </li>
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+  <article>
+    <header>
+      <h1 class="title">Docker Quick Tour (con.)</h1>
+      <h2 class="date">June 12, 2014</h2>
+    </header>
+
+    <p>##Usage(con.)</p>
+
+<ul>
+<li><p>Port mapping can be configured while <code>docker run</code></p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ sudo docker run -d -p 5000:5000 training/webapp python app.py</pre></div></li>
+
+<li><p>Or be configured in <code>Dockerfile</code></p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># Dockerfile
+EXPOSE 5901</pre></div></li>
+
+<li><p>Mount a Host Directory as a Data Volume</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">$ sudo docker run -d -P --name web -v /src/webapp:/opt/webapp training/webapp python app.py</pre></div></li>
+</ul>
+
+<p>##Dockerfile
+An example dockerfile to dockerize a node.js application.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"># Specific docker server version
+# DOCKER-VERSION 0.3.4
+
+# Base image, usually retrieve from docker hub.
+FROM    centos:6.4
+
+# Enable EPEL for Node.js
+RUN     rpm -Uvh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+# Install Node.js and npm
+RUN     yum install -y npm
+
+# Bundle app source, dockerfile is in `.` together with `.js` code.
+ADD . /src
+# Install app dependencies
+RUN cd /src; npm install
+
+# Make 8080 can be mapped to host.
+EXPOSE  8080
+
+# Start the app.
+CMD [&#34;node&#34;, &#34;/src/index.js&#34;]</pre></div>
+<p>##Network</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">Host
+--------------docker0(bridge)-----------
+|           |       |       |
+vethAQI2QT  ...     ...
+|           |       |       |
+|--------
+|           |       |       |
+eth0            ...
+|
+Container0  ...</pre></div>
+<p>##Summary
+- Sandbox under same linux kernel. Similar AIX WPAR.
+- Workflow similar to git.
+- Image and container similar to openstack image and instance.
+- Virtual Environment, not Virtual Machine.
+- Faster to start but less hardware separation.
+- Still in heavy development.</p>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    © 2014 · Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

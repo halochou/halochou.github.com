@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ibm on Yang Zhou</title>
+    <link>http://halochou.github.io/tags/ibm/</link>
+    <description>Recent content in Ibm on Yang Zhou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 21 Feb 2014 14:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://halochou.github.io/tags/ibm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>V7000性能数据收集机制</title>
+      <link>http://halochou.github.io/posts/2014-02-21-v7k-perf-stats/</link>
+      <pubDate>Fri, 21 Feb 2014 14:00:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-02-21-v7k-perf-stats/</guid>
+      <description>V7000性能数据收集机制 V7000默认以5分钟间隔收集关于MDisks、VDisks及控制器节点的统计数据。 生成的文件位于/dumps/iostats，文件名形式stats_type_stats_nodepanelname_date_time。 例如：
+Nm_stats_000229_031123_072426 Nv_stats_000229_031123_072426 Nn_stats_000229_031123_072426 最大存储文件数量为16个，之后会删除最早的文件，写入最新的文件。 所以收集统计数据的原理就是在系统自动删除早期数据文件前将文件拷出。
+修改采样间隔 startstats命令用于修改采样时间，早起版本固件中含有stopstats命令，现已废弃。即新版本V7000系统始终对性能数据进行采集，采集动作无法停止，只能使用startstats改变间隔。
+例如将采样间隔改为25分钟：
+svctask startstats -interval 25 数据导出 /dumps/iostats中的数据可使用scp命令拷出，方法与Linux/Unix相同。
+因为通过ssh仅可以访问当前生效的控制器节点（configuration node），如果希望拷出备用节点的数据，需使用cpdumps命令，该命令会将指定节点中的指定数据复制到configuration node，之后即可用scp拷出。
+svctask cpdumps -prefix /dumps/iostats nodeone 具体说明请参考官方手册
+svcmon svcmon是一套实用脚本工具，使用Perl开发，可以自动完成SVC/V7000的数据采集、制图工作。但该工具并非IBM官方出品，请谨慎使用。（IBM官方仅支持TPC） svcmon主页 ##svcmon实现原理 svcmon使用scp下载/dumps/iostats中的数据，使用PostgreSQL存储数据，原理上与手工收集相同。
+收集动作源代码：
+############################################################################### # # CopyGetIostatsList # # 1. Called by none-config nodes. # 2. Get stats file names on local node using the lsiostatsdumps command. # 2. Adding (unshift) stats file names that match front panel id ($front_panel_id) to @stats_files array.</description>
+    </item>
+    
+    <item>
+      <title>Linux/Unix Learn Note</title>
+      <link>http://halochou.github.io/posts/2014-01-13-cli-note/</link>
+      <pubDate>Mon, 13 Jan 2014 15:22:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-13-cli-note/</guid>
+      <description>This is a note which recorded *nix cli command I learnt. It will be updated continuously.
+#Linux
+##Process
+###lsof
+Get which file was opened by pid.
+lsof -p pid Get which process opened this file.
+lsof /var/run/sendmail.pid  Get file already been deleted but still held in /proc
+lsof | grep deleted cat /proc/pid/fd/dddd &amp;gt; /tmp/sample Get process using port 80
+lsof -i :80 Get process communicating with 192.168.1.10
+lsof -i @192.</description>
+    </item>
+    
+  </channel>
+</rss>

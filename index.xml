@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yang Zhou</title>
+    <link>http://halochou.github.io/</link>
+    <description>Recent content on Yang Zhou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 18 Jun 2014 13:25:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://halochou.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Vagrant Overview</title>
+      <link>http://halochou.github.io/posts/2014-06-18-vagrant-overview/</link>
+      <pubDate>Wed, 18 Jun 2014 13:25:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-06-18-vagrant-overview/</guid>
+      <description>Vagrant is a layer above virtual machine manager to automate VM operation. It use seed file Vagrantfile and image file Box to abstact VM&amp;rsquo;s information.
+###Installation Vagrant need VirtualBox as backend engine(Provider).
+VMware is also available but both VMware and provider plugin need be purchased.
+Docker is also available as provider but docker itself runs in VM on OSX. Try on PC later.
+###Init
+$ vagrant init This will generate a init Vagrantfile for later customize.</description>
+    </item>
+    
+    <item>
+      <title>Two interesting linux command.</title>
+      <link>http://halochou.github.io/posts/2014-06-12-two-linux-cmd/</link>
+      <pubDate>Thu, 12 Jun 2014 23:45:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-06-12-two-linux-cmd/</guid>
+      <description>Get two interesting linux command from this article.
+ strings
+NAME strings - find the printable strings in a object, or other binary, file SYNOPSIS strings [ - ] [ -a ] [ -o ] [ -t format ] [ -number ] [ -n number ] [--] [file ...] DESCRIPTION Strings looks for ASCII strings in a binary file or standard input. Strings is useful for identifying random object files and many other things.</description>
+    </item>
+    
+    <item>
+      <title>Docker Quick Tour (con.)</title>
+      <link>http://halochou.github.io/posts/2014-06-12-docker-startup-con/</link>
+      <pubDate>Thu, 12 Jun 2014 22:40:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-06-12-docker-startup-con/</guid>
+      <description>##Usage(con.)
+ Port mapping can be configured while docker run
+$ sudo docker run -d -p 5000:5000 training/webapp python app.py Or be configured in Dockerfile
+# Dockerfile EXPOSE 5901 Mount a Host Directory as a Data Volume
+$ sudo docker run -d -P --name web -v /src/webapp:/opt/webapp training/webapp python app.py  ##Dockerfile An example dockerfile to dockerize a node.js application.
+# Specific docker server version # DOCKER-VERSION 0.3.4 # Base image, usually retrieve from docker hub.</description>
+    </item>
+    
+    <item>
+      <title>Docker Quick Tour</title>
+      <link>http://halochou.github.io/posts/2014-06-10-docker-startup/</link>
+      <pubDate>Tue, 10 Jun 2014 21:00:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-06-10-docker-startup/</guid>
+      <description>This is a brief record about my one-day trail on Docker.
+ Docker is an open platform for developing, shipping, and running applications. Docker is designed to deliver your applications faster. With Docker you can separate your applications from your infrastructure AND treat your infrastructure like a managed application. Docker helps you ship code faster, test faster, deploy faster, and shorten the cycle between writing code and running code.
+ ##Architecture</description>
+    </item>
+    
+    <item>
+      <title>Share VPN connection in Ubuntu</title>
+      <link>http://halochou.github.io/posts/2014-02-24-share-vpn/</link>
+      <pubDate>Mon, 24 Feb 2014 14:00:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-02-24-share-vpn/</guid>
+      <description>Background  Company&amp;rsquo;s VPN client doesn&amp;rsquo;t support Mac OSX. Other VPN offered is slow. To use VPN, I set up a Ubuntu virtual machine in VMWare. Ubuntu uses VPN access company intranet and acts as a PPTP VPN server. Mac OSX connected to Ubuntu to access the intranet.  Environment  Ubuntu 13.04 Server eth0 inet addr:192.168.1.149 Bcast:192.168.1.255 Mask:255.255.255.0 #WAN, Bridged network in VMWare. tun0 inet addr:9.125.1.86 P-t-P:9.125.1.86 Mask:255.255.255.255 #Company VPN Tunnel ppp0 inet addr:192.</description>
+    </item>
+    
+    <item>
+      <title>V7000性能数据收集机制</title>
+      <link>http://halochou.github.io/posts/2014-02-21-v7k-perf-stats/</link>
+      <pubDate>Fri, 21 Feb 2014 14:00:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-02-21-v7k-perf-stats/</guid>
+      <description>V7000性能数据收集机制 V7000默认以5分钟间隔收集关于MDisks、VDisks及控制器节点的统计数据。 生成的文件位于/dumps/iostats，文件名形式stats_type_stats_nodepanelname_date_time。 例如：
+Nm_stats_000229_031123_072426 Nv_stats_000229_031123_072426 Nn_stats_000229_031123_072426 最大存储文件数量为16个，之后会删除最早的文件，写入最新的文件。 所以收集统计数据的原理就是在系统自动删除早期数据文件前将文件拷出。
+修改采样间隔 startstats命令用于修改采样时间，早起版本固件中含有stopstats命令，现已废弃。即新版本V7000系统始终对性能数据进行采集，采集动作无法停止，只能使用startstats改变间隔。
+例如将采样间隔改为25分钟：
+svctask startstats -interval 25 数据导出 /dumps/iostats中的数据可使用scp命令拷出，方法与Linux/Unix相同。
+因为通过ssh仅可以访问当前生效的控制器节点（configuration node），如果希望拷出备用节点的数据，需使用cpdumps命令，该命令会将指定节点中的指定数据复制到configuration node，之后即可用scp拷出。
+svctask cpdumps -prefix /dumps/iostats nodeone 具体说明请参考官方手册
+svcmon svcmon是一套实用脚本工具，使用Perl开发，可以自动完成SVC/V7000的数据采集、制图工作。但该工具并非IBM官方出品，请谨慎使用。（IBM官方仅支持TPC） svcmon主页 ##svcmon实现原理 svcmon使用scp下载/dumps/iostats中的数据，使用PostgreSQL存储数据，原理上与手工收集相同。
+收集动作源代码：
+############################################################################### # # CopyGetIostatsList # # 1. Called by none-config nodes. # 2. Get stats file names on local node using the lsiostatsdumps command. # 2. Adding (unshift) stats file names that match front panel id ($front_panel_id) to @stats_files array.</description>
+    </item>
+    
+    <item>
+      <title>折腾Jekyll的收获</title>
+      <link>http://halochou.github.io/posts/2014-01-13-about-jekyll/</link>
+      <pubDate>Mon, 13 Jan 2014 16:25:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-13-about-jekyll/</guid>
+      <description>还是忍不住又折腾了一次，花了不少时间把blog迁移到Jekyll了，不过收获还是不小的。
+原本用hexo挺好的，忍不住研究了一下Jekyll的目录结构，比hexo简洁许多，虽然需要自己动手的地方多些，但就当学习Web前端技术了。
+折腾期间按照Instapaper的风格fork出了一套主题，已传到Github了。改得很粗糙，留着以后慢慢雕琢吧
+现在Blog用的主题是Minimal Mistakes，自己做了一些符合天朝特色的定制。
+此番对Web前端技术的认识有了不少提高，简单整理一下。
+#Bootstrap Twitter工程师开发的前端框架，我理解就是一组预定好的网页组件、布局的CSS，只包含前端视觉部分，可用于任何html设计环境。
+基本模板：
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Bootstrap 101 Template&amp;lt;/title&amp;gt; &amp;lt;meta name=&amp;#34;viewport&amp;#34; content=&amp;#34;width=device-width, initial-scale=1.0&amp;#34;&amp;gt; &amp;lt;!-- Bootstrap --&amp;gt; &amp;lt;link href=&amp;#34;css/bootstrap.min.css&amp;#34; rel=&amp;#34;stylesheet&amp;#34;&amp;gt; &amp;lt;!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --&amp;gt; &amp;lt;!-- WARNING: Respond.js doesn&amp;#39;t work if you view the page via file:// --&amp;gt; &amp;lt;!--[if lt IE 9]&amp;gt; &amp;lt;script src=&amp;#34;https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;script src=&amp;#34;https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;![endif]--&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h1&amp;gt;Hello, world!&amp;lt;/h1&amp;gt; &amp;lt;!-- jQuery (necessary for Bootstrap&amp;#39;s JavaScript plugins) --&amp;gt; &amp;lt;script src=&amp;#34;https://code.</description>
+    </item>
+    
+    <item>
+      <title>Linux/Unix Learn Note</title>
+      <link>http://halochou.github.io/posts/2014-01-13-cli-note/</link>
+      <pubDate>Mon, 13 Jan 2014 15:22:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-13-cli-note/</guid>
+      <description>This is a note which recorded *nix cli command I learnt. It will be updated continuously.
+#Linux
+##Process
+###lsof
+Get which file was opened by pid.
+lsof -p pid Get which process opened this file.
+lsof /var/run/sendmail.pid  Get file already been deleted but still held in /proc
+lsof | grep deleted cat /proc/pid/fd/dddd &amp;gt; /tmp/sample Get process using port 80
+lsof -i :80 Get process communicating with 192.168.1.10
+lsof -i @192.</description>
+    </item>
+    
+    <item>
+      <title>Linux and me</title>
+      <link>http://halochou.github.io/posts/2014-01-08-linux-and-me/</link>
+      <pubDate>Wed, 08 Jan 2014 12:43:45 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-08-linux-and-me/</guid>
+      <description>没记错的话，大约就是2000年第一次接触Linux，当时看到杂志上说Linux能在很古老的硬件上运行，而且Titanic就是用这东西渲染的。
+是的，这就是当时我对Linux的全部了解。 于是就冲到盗版盘市场买了张RedHat 6.2（不是现在的RHEL 6.2，那会RedHat还没分出Fedora和RHEL呢）。回来安装就受阻了，什么是Mount Point,完全不懂啊，当时也没有网络，只能在书店一本一本找。等终于成功装完，才发现这是个和Windows完全不同的世界，束手束脚，什么都不会做。第一次接触Linux就这样被彻底吓到了，当晚装回Windows ME，宣告迁移失败。
+不过实践了就有益无害，这一步真是为之后接触Linux开了个好头。
+高中的时候喜欢跑到邮局书店看免费杂志，从《电脑爱好者》（感谢CFAN启蒙之恩）里看到Ubuntu官网的光盘免费派送活动，尝试这申请了一个，不料真的邮寄来了。试用一下，如同进入一个广阔的新天地，Gnome+Compiz简直太炫目了。有人评论Ubuntu在Linux普及上的贡献是巨大的，确实不错。如果当时用的是Arch，估计我就又果断撤退了。
+初用Ubuntu，最大的不适应就是常用软件，图形界面下没几个靠谱的（其实现在也是…），Openoffice更是完全闹着玩的，根本没办法代替M$，而且家里的台式机也不是我一个人用，还要照顾父母的工作，折腾幅度必须尽量小，结果就是多次尝试迁移主系统到Ubuntu都失败了。
+我一直认为，想全面了解一个事物，与之朝夕相伴是最好的方法。 学习Linux，双系统永远都不能传授什么知识，只有彻底抛弃Windows才行。 这一目标终于在上大学后有了自己的电脑后实现了。
+经历了多少次 努力用Linux&amp;mdash;想念Windows&amp;mdash;迁移失败&amp;mdash;回退 这种循环已经记不得了，总之是一个漫长的过程。人总会偏爱自己熟悉的事物，起初用Linux时，总会对其与Windows不同的设计耿耿于怀，觉得不一样就是不合理，之后越来越想念熟悉的Windows，再之后重装回去……我相信很多开源爱好者都是这么一步一步走过来的。如果小时候第一次用电脑就用Linux该多好，我相信他们也一定这么想。
+还有一个重要因素就是Linux的图形界面确实不够成熟，对新手还不够友好。 图形界面不好用，自然就发掘一下命令行的世界。记得一个朋友初用Ubuntu的时候抱怨过，Synaptic很好用，为什么网上的教程都用apt-get，当时我也无法解答他的问题，现在看来，这个问题恐怕很难解答，除了效率、自由度之类的原因外，其他的因素恐怕只可意会不可言传。
+熟悉了命令行就能更快的发现Linux的优势。除了一些商业软件找不到合适的Linux替代品外，其他几乎满满的都是优点。觉得好用&amp;mdash;渴望多了解&amp;mdash;越发觉得好用，良性循环恐怕就是这样建立的吧。这期间有两件事我觉得对自己影响颇大，一是Archlinux，一是《Unix编程艺术》。
+第一次接触Archlinux，觉得这东西太反人类了，这恐怕正式当时认识太浅薄的表现。 第二次接触则是众多次重装系统中的一次尝试，找着官网Guide一步一步安装下去，发现这个小巧的发行版这急的如此精致，而且因为需要手工解包，安装程序不再是一个神秘的黑盒，对Linux的认识被彻底刷新。我一直强烈反对计算机专业的朋友使用Windows也是这个原因，一个根本无法看清内部细节的系统，苦心钻研怎么为他编程又有什么用。
+一次大学的图书馆无意间借到《Unix编程艺术》。当时正在做毕业设计的程序&amp;ndash;一个简单的UDP发包器，使用Python+wxWidget实现，之前只学习过编程语言，完全没接触过程序设计理论，更不懂解耦。也许是一直使用Linux，潜移默化的暗示下，总觉得自己的程序看起来不自然，修改程序时总有推倒重构的冲动。看了《Unix编程艺术》，理解了KISS原则，豁然开朗，之前觉得*nix的各种优势得到了系统的解释。
+说了很多力挺Linux的言论，但缺点也不能不说。开源是件好事，但开发者的动力从何而来呢，资金从何而来呢，无非是开发者对代码的热爱和商业公司对社区的资助。无利不起早啊，商业公司资助大型项目一定是因为项目对自身商用有利，个人桌面应用则不比商用，没有直接利益，也就少有人出资，仅凭开发者一枪热情自然只能点到为止，能用就行。
+我在2013年底购入了人生的第一台Mac，之前尝试过黑苹果，但是稳定性太差，根本无法实用。现在用上OSX，感觉就像是回家，这才是真正意义上的产品。这是最先进的操作系统，没有之一。
+杂七杂八写了不少，就此打住吧。</description>
+    </item>
+    
+    <item>
+      <title>Markdown Syntax</title>
+      <link>http://halochou.github.io/posts/2014-01-08-markdown-syntax/</link>
+      <pubDate>Wed, 08 Jan 2014 11:31:43 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-08-markdown-syntax/</guid>
+      <description>本文转自Wow!Ubuntu，用作Markdown备忘。
+NOTE: This is Simplelified Chinese Edition Document of Markdown Syntax. If you are seeking for English Edition Document. Please refer to Markdown: Syntax.
+声明： 这份文档派生(fork)于繁体中文版，在此基础上进行了繁体转简体工作，并进行了适当的润色。此文档用 Markdown 语法编写，你可以到这里查看它的源文件。「繁体中文版的原始文件可以查看这里 。」&amp;ndash;By @riku
+注： 本项目托管于 GitCafe上，请通过&amp;rdquo;派生&amp;rdquo;和&amp;rdquo;合并请求&amp;rdquo;来帮忙改进本项目。
+Markdown 语法说明 (简体中文版) / (点击查看快速入门)  概述  宗旨 兼容 HTML 特殊字符自动转换  区块元素  段落和换行 标题 区块引用 列表 代码区块 分隔线  区段元素  链接 强调 代码 图片  其它  反斜杠 自动链接  感谢 Markdown 免费编辑器  概述 宗旨 Markdown 的目标是实现「易读易写」。</description>
+    </item>
+    
+    <item>
+      <title>Hexo折腾笔记</title>
+      <link>http://halochou.github.io/posts/2014-01-08-hexo-config/</link>
+      <pubDate>Wed, 08 Jan 2014 10:10:18 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-08-hexo-config/</guid>
+      <description>第一次搭博客，发现这还真是个挺有意思的话题。
+#平台选择 本人基本上患有选择困难症，之前用Linux的时候，每个月换一次发行版，这次挑选博客平台时又毫无意外的花了很长时间抉择。经过一般挖掘，大致有以下几个选项。
+ Wordpress  优点：主流博客平台，资源众多，易上手。
+缺点：作为老牌平台，有些臃肿，我也不计划对PHP深挖，不便未来折腾；Wordpress.com因某些原因无法访问（You Know），其他国内平台又不大想用，自己搭的话，主页空间自由度不高，VPS又太贵~
+ Ghost  主页介绍看起来很诱人，可惜没有免费服务，只能自己在本地搭个玩玩，等以后有VPS了再折腾吧。
+ Jekyll / Octopress  Github Pages默认引擎，好多大神貌似都在用。试用了一下，还是挺不错的，符合高度定制化的Geek风格，。不过就是太折腾，都搭好了估计早就懒得写博文了……另外据说文章多了性能是个问题。
+ Hexo  最终选定Hexo，台湾同胞的作品，难望其项背啊。看看人家的功力，再看看自己…唉……
+优点：Hexo是一个基于Node.js的博客框架，十分简约，默认主题很优雅，效率很好，而且可以生成静态网页后自动部署到Github上，一举两得。
+缺点：还是有点小众，资源略少，出了Bug Google未必知道。
+#Hexo安装 Hexo官网有很详细的介绍，其实只要一个命令就足够了。
+npm install -g hexo 之后初始化自己的博客就齐了。
+hexo init blog 默认目录结构：
+. ├── _config.yml ├── package.json ├── scaffolds ├── scripts ├── source | ├── _drafts | └── _posts └── themes #Hexo优化 Hexo的初始配置很简约，而且默认的评论分享模块不符合天朝国情（此处省略一万字……），还是要自己打理一下才好。做了修改之后，可以用这个命令测试一下：
+hexo server 或者
+hexo s 默认配置会在localhost:4000建立一个webserver，自行查看即可。
+##主题 通过npm安装过来的hexo默认主题是landscape，不是传说中的light，原因不明（下一代？没light好看），有知道的朋友还望告诉一声。
+安装light，在blog根目录下执行：
+git clone git://github.</description>
+    </item>
+    
+    <item>
+      <title>Hello World</title>
+      <link>http://halochou.github.io/posts/2014-01-07-hello-world/</link>
+      <pubDate>Tue, 07 Jan 2014 19:52:34 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-07-hello-world/</guid>
+      <description>开博的想法由来已久，在一个朋友的启发下决定付诸实践。
+经常光顾各种技术大牛的博客，吸收知识的同时也有各种艳羡。 我不算程序员，只是个编程爱好者，学的也不是计算机专业，但是确实无比热爱这门科学。 第一篇博文用来回忆一下自己和计算机的故事吧，没什么逻辑性，也没什么文笔，权当留个纪念。
+1997年的时候，父亲工作单位给家里分配了一台PC，记得品牌叫A-Star，16MB内存，800MB昆腾硬盘。现在这些牌子恐怕早就没有了吧。当时我只有8岁，现在看来，能那么早接触计算机真是幸运。如今这个产业很发达，小孩子都会玩iPad、上网，入门没有门槛，但含金量也自然下降了，何况游戏的诱惑太大，要想对计算机本身产生兴趣还真是困难。97年那会就不同了，虽然当时应该已经有了Win95，但家里的电脑还是Win32，现在看Win32不过就是DOS上的一个APP，启动了它再启动游戏可能资源就不够了，于是一切活动都在DOS里进行。cd pal、play.bat…当时根本不知道play是什么意思，看来游戏的动力真是大啊。
+2000年的时候，老爸从二手市场花50元淘回来一条16M内存，家里早已无比缓慢的电脑在有了32M内存后焕发了一阵青春（只是一阵而已…），用现在的话讲，当时的世界观都被刷新了，原来电脑这东西没那么金贵，才50。自此，换硬盘，换电源，刷BIOS，刷BIOS失败，换主板…一路折腾下来，家里的老爷机除了机箱，恐怕什么都更换了一遍。这一年了，我把98年整年的《电脑爱好者》翻了不知多少遍，收获也真是无比丰富，那份快乐恐怕很难再有了。（其实从《电脑爱好者》这杂志也基本能验证我之前的观点，现在这杂志已经彻底是个计算机普及读物了，相比之下，当年的内容简直太Geek了，这里也要感谢父亲为我开了个好头，是他把我带进了这个神奇的领域。）
+现在的接触计算机已经16年了，方方面面也玩过不少，美好的回忆真的很多，从前不写东西真心没有体会。想想确实确实应该有个地方把这些经历做个积淀，温故知新。
+开这个博客旨在记录生活与技术的一些感悟。现在技术尚浅，但愿能与此博一起成长，早日想些样子。 关于技术，除了开源领域需要学习的众多主题，我也计划写些工作相关的经验，都是知识，有备无患吧。
+希望这个博客能是一个新的开始。</description>
+    </item>
+    
+    <item>
+      <title>About ME</title>
+      <link>http://halochou.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/about/</guid>
+      <description>Here should go my CV.
+But I am lazy, so maybe later&amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>

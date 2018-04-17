@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Yang Zhou">
+    <meta name="description" content="Yang Zhou&#39;s personal website">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <base href="http://halochou.github.io">
+    <title>
+  V7000性能数据收集机制 · Yang Zhou
+</title>
+
+    <link rel="canonical" href="http://halochou.github.io/posts/2014-02-21-v7k-perf-stats/">
+
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:400,700">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="http://halochou.github.io/css/style.min.css">
+
+    <link rel="icon" type="image/png" href="http://halochou.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://halochou.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    
+
+    <meta name="generator" content="Hugo 0.39" />
+  </head>
+
+  <body>
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://halochou.github.io/">
+      Yang Zhou
+    </a>
+    
+    <ul class="navigation-list float-right">
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="http://halochou.github.io/posts/">Blog</a>
+      </li>
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="http://halochou.github.io/about/">About</a>
+      </li>
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+  <article>
+    <header>
+      <h1 class="title">V7000性能数据收集机制</h1>
+      <h2 class="date">February 21, 2014</h2>
+    </header>
+
+    
+
+<h1 id="v7000性能数据收集机制">V7000性能数据收集机制</h1>
+
+<p>V7000默认以5分钟间隔收集关于MDisks、VDisks及控制器节点的统计数据。
+生成的文件位于<code>/dumps/iostats</code>，文件名形式<code>stats_type_stats_nodepanelname_date_time</code>。
+例如：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">Nm_stats_000229_031123_072426
+Nv_stats_000229_031123_072426
+Nn_stats_000229_031123_072426</pre></div>
+<p>最大存储文件数量为16个，之后会删除最早的文件，写入最新的文件。
+所以收集统计数据的原理就是在系统自动删除早期数据文件前将文件拷出。</p>
+
+<h2 id="修改采样间隔">修改采样间隔</h2>
+
+<p><code>startstats</code>命令用于修改采样时间，早起版本固件中含有<code>stopstats</code>命令，现已废弃。即新版本V7000系统始终对性能数据进行采集，采集动作无法停止，只能使用<code>startstats</code>改变间隔。</p>
+
+<p>例如将采样间隔改为25分钟：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">svctask startstats -interval 25</pre></div>
+<h2 id="数据导出">数据导出</h2>
+
+<p><code>/dumps/iostats</code>中的数据可使用<code>scp</code>命令拷出，方法与Linux/Unix相同。</p>
+
+<p>因为通过ssh仅可以访问当前生效的控制器节点（configuration node），如果希望拷出备用节点的数据，需使用<code>cpdumps</code>命令，该命令会将指定节点中的指定数据复制到<code>configuration node</code>，之后即可用scp拷出。</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">svctask cpdumps -prefix /dumps/iostats nodeone</pre></div>
+<p>具体说明请参考<a href="http://pic.dhe.ibm.com/infocenter/svc/ic/topic/com.ibm.storage.svc.console.610.doc/svc_clustercomm_21ie7a.html">官方手册</a></p>
+
+<h1 id="svcmon">svcmon</h1>
+
+<p><code>svcmon</code>是一套实用脚本工具，使用Perl开发，可以自动完成SVC/V7000的数据采集、制图工作。但该工具并非IBM官方出品，请谨慎使用。（IBM官方仅支持TPC）
+<a href="https://www.ibm.com/developerworks/community/blogs/svcmon/entry/introduction?lang=en">svcmon主页</a>
+##svcmon实现原理
+<code>svcmon</code>使用<code>scp</code>下载<code>/dumps/iostats</code>中的数据，使用<code>PostgreSQL</code>存储数据，原理上与手工收集相同。</p>
+
+<p>收集动作源代码：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">###############################################################################
+#
+# CopyGetIostatsList
+#
+# 1. Called by none-config nodes.
+# 2. Get stats file names on local node using the lsiostatsdumps command.
+# 2. Adding (unshift) stats file names that match front panel id ($front_panel_id) to @stats_files array.
+# 3. Sort stats file names by date.
+#
+###############################################################################
+
+sub CopyGetIostatsList {
+
+    # Scan all (Node, VDisk, MDisk, Drive) stats files
+    while(defined($stats_file = shift(@stats_files))) {
+
+        # Handle Node stats file
+        if($stats_file =~ m/Nn/ &amp;&amp; $stats_file gt $Nn_last[$node]) {
+            $command = $ssh . &#34; svctask cpdumps -prefix /dumps/iostats/&#34; . $stats_file .  &#34; &#34; . $node;
+            ExecCommand();
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nn_last[$node] = $stats_file;
+        }
+
+        # Handle VDisk stats file
+        if($stats_file =~ m/Nv/ &amp;&amp; $stats_file gt $Nv_last[$node]) {
+            $command = $ssh . &#34; svctask cpdumps -prefix /dumps/iostats/&#34; . $stats_file .  &#34; &#34; . $node;
+            ExecCommand();
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nv_last[$node] = $stats_file;
+        }
+
+        # Handle MDisk stats file
+        if($stats_file =~ m/Nm/ &amp;&amp; $stats_file gt $Nm_last[$node]) {
+            $command = $ssh . &#34; svctask cpdumps -prefix /dumps/iostats/&#34; . $stats_file .  &#34; &#34; . $node;
+            ExecCommand();
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nm_last[$node] = $stats_file;
+        }
+
+        # Handle Drive stats file
+        if($stats_file =~ m/Nd/ &amp;&amp; $stats_file gt $Nd_last[$node]) {
+            $command = $ssh . &#34; svctask cpdumps -prefix /dumps/iostats/&#34; . $stats_file .  &#34; &#34; . $node;
+            ExecCommand();
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nd_last[$node] = $stats_file;
+        }
+    }
+}
+
+
+###############################################################################
+#
+# GetIostatsList
+#
+# 1. Called by config nodes.
+# 2. Get stats file names on local node using the lsiostatsdumps command.
+# 2. Adding (unshift) stats file names that match front panel id ($front_panel_id) to @stats_files array.
+# 3. Sort stats file names by date.
+#
+###############################################################################
+
+sub GetIostatsList {
+
+    # Scan all (Node, VDisk, MDisk, Drive) stats files
+    while(defined($stats_file = shift(@stats_files))) {
+
+        # Handle Node stats file
+        if($stats_file =~ m/Nn/ &amp;&amp; $stats_file gt $Nn_last[$node]) {
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nn_last[$node] = $stats_file;
+        }
+
+        # Handle VDisk stats file
+        if($stats_file =~ m/Nv/ &amp;&amp; $stats_file gt $Nv_last[$node]) {
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nv_last[$node] = $stats_file;
+        }
+
+        # Handle MDisk stats file
+        if($stats_file =~ m/Nm/ &amp;&amp; $stats_file gt $Nm_last[$node]) {
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nm_last[$node] = $stats_file;
+        }
+
+        # Handle Drive stats file
+        if($stats_file =~ m/Nd/ &amp;&amp; $stats_file gt $Nd_last[$node]) {
+            $command = &#34;$scp$stats_file $dir&#34;;
+            ExecCommand();
+            &amp;InsertDataBase();
+            $Nd_last[$node] = $stats_file;
+        }
+    }
+}</pre></div>
+<h1 id="v7000-ssh登录配置方法">V7000 ssh登录配置方法</h1>
+
+<ol>
+<li><a href="http://pic.dhe.ibm.com/infocenter/storwize/ic/index.jsp?topic=%2Fcom.ibm.storwize.v7000.710.doc%2Fsvc_sshonwindows.html">Setting up an SSH client on a Windows host</a></li>
+<li><a href="http://pic.dhe.ibm.com/infocenter/storwize/ic/index.jsp?topic=%2Fcom.ibm.storwize.v7000.710.doc%2Fsvc_sshonanaixhost_29elsk.html">Preparing the SSH client on an AIX or Linux host</a></li>
+</ol>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    © 2014 · Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

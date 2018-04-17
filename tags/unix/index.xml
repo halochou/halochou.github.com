@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Unix on Yang Zhou</title>
+    <link>http://halochou.github.io/tags/unix/</link>
+    <description>Recent content in Unix on Yang Zhou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 13 Jan 2014 15:22:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://halochou.github.io/tags/unix/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Linux/Unix Learn Note</title>
+      <link>http://halochou.github.io/posts/2014-01-13-cli-note/</link>
+      <pubDate>Mon, 13 Jan 2014 15:22:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-13-cli-note/</guid>
+      <description>This is a note which recorded *nix cli command I learnt. It will be updated continuously.
+#Linux
+##Process
+###lsof
+Get which file was opened by pid.
+lsof -p pid Get which process opened this file.
+lsof /var/run/sendmail.pid  Get file already been deleted but still held in /proc
+lsof | grep deleted cat /proc/pid/fd/dddd &amp;gt; /tmp/sample Get process using port 80
+lsof -i :80 Get process communicating with 192.168.1.10
+lsof -i @192.</description>
+    </item>
+    
+  </channel>
+</rss>

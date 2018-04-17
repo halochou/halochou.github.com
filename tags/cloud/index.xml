@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloud on Yang Zhou</title>
+    <link>http://halochou.github.io/tags/cloud/</link>
+    <description>Recent content in Cloud on Yang Zhou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 18 Jun 2014 13:25:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://halochou.github.io/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Vagrant Overview</title>
+      <link>http://halochou.github.io/posts/2014-06-18-vagrant-overview/</link>
+      <pubDate>Wed, 18 Jun 2014 13:25:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-06-18-vagrant-overview/</guid>
+      <description>Vagrant is a layer above virtual machine manager to automate VM operation. It use seed file Vagrantfile and image file Box to abstact VM&amp;rsquo;s information.
+###Installation Vagrant need VirtualBox as backend engine(Provider).
+VMware is also available but both VMware and provider plugin need be purchased.
+Docker is also available as provider but docker itself runs in VM on OSX. Try on PC later.
+###Init
+$ vagrant init This will generate a init Vagrantfile for later customize.</description>
+    </item>
+    
+    <item>
+      <title>Docker Quick Tour (con.)</title>
+      <link>http://halochou.github.io/posts/2014-06-12-docker-startup-con/</link>
+      <pubDate>Thu, 12 Jun 2014 22:40:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-06-12-docker-startup-con/</guid>
+      <description>##Usage(con.)
+ Port mapping can be configured while docker run
+$ sudo docker run -d -p 5000:5000 training/webapp python app.py Or be configured in Dockerfile
+# Dockerfile EXPOSE 5901 Mount a Host Directory as a Data Volume
+$ sudo docker run -d -P --name web -v /src/webapp:/opt/webapp training/webapp python app.py  ##Dockerfile An example dockerfile to dockerize a node.js application.
+# Specific docker server version # DOCKER-VERSION 0.3.4 # Base image, usually retrieve from docker hub.</description>
+    </item>
+    
+    <item>
+      <title>Docker Quick Tour</title>
+      <link>http://halochou.github.io/posts/2014-06-10-docker-startup/</link>
+      <pubDate>Tue, 10 Jun 2014 21:00:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-06-10-docker-startup/</guid>
+      <description>This is a brief record about my one-day trail on Docker.
+ Docker is an open platform for developing, shipping, and running applications. Docker is designed to deliver your applications faster. With Docker you can separate your applications from your infrastructure AND treat your infrastructure like a managed application. Docker helps you ship code faster, test faster, deploy faster, and shorten the cycle between writing code and running code.
+ ##Architecture</description>
+    </item>
+    
+  </channel>
+</rss>

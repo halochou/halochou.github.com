@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on Yang Zhou</title>
+    <link>http://halochou.github.io/tags/blog/</link>
+    <description>Recent content in Blog on Yang Zhou</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 13 Jan 2014 16:25:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://halochou.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>折腾Jekyll的收获</title>
+      <link>http://halochou.github.io/posts/2014-01-13-about-jekyll/</link>
+      <pubDate>Mon, 13 Jan 2014 16:25:00 +0000</pubDate>
+      
+      <guid>http://halochou.github.io/posts/2014-01-13-about-jekyll/</guid>
+      <description>还是忍不住又折腾了一次，花了不少时间把blog迁移到Jekyll了，不过收获还是不小的。
+原本用hexo挺好的，忍不住研究了一下Jekyll的目录结构，比hexo简洁许多，虽然需要自己动手的地方多些，但就当学习Web前端技术了。
+折腾期间按照Instapaper的风格fork出了一套主题，已传到Github了。改得很粗糙，留着以后慢慢雕琢吧
+现在Blog用的主题是Minimal Mistakes，自己做了一些符合天朝特色的定制。
+此番对Web前端技术的认识有了不少提高，简单整理一下。
+#Bootstrap Twitter工程师开发的前端框架，我理解就是一组预定好的网页组件、布局的CSS，只包含前端视觉部分，可用于任何html设计环境。
+基本模板：
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Bootstrap 101 Template&amp;lt;/title&amp;gt; &amp;lt;meta name=&amp;#34;viewport&amp;#34; content=&amp;#34;width=device-width, initial-scale=1.0&amp;#34;&amp;gt; &amp;lt;!-- Bootstrap --&amp;gt; &amp;lt;link href=&amp;#34;css/bootstrap.min.css&amp;#34; rel=&amp;#34;stylesheet&amp;#34;&amp;gt; &amp;lt;!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --&amp;gt; &amp;lt;!-- WARNING: Respond.js doesn&amp;#39;t work if you view the page via file:// --&amp;gt; &amp;lt;!--[if lt IE 9]&amp;gt; &amp;lt;script src=&amp;#34;https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;script src=&amp;#34;https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;![endif]--&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h1&amp;gt;Hello, world!&amp;lt;/h1&amp;gt; &amp;lt;!-- jQuery (necessary for Bootstrap&amp;#39;s JavaScript plugins) --&amp;gt; &amp;lt;script src=&amp;#34;https://code.</description>
+    </item>
+    
+  </channel>
+</rss>

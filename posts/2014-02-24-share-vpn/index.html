@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Yang Zhou">
+    <meta name="description" content="Yang Zhou&#39;s personal website">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <base href="http://halochou.github.io">
+    <title>
+  Share VPN connection in Ubuntu · Yang Zhou
+</title>
+
+    <link rel="canonical" href="http://halochou.github.io/posts/2014-02-24-share-vpn/">
+
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:400,700">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="http://halochou.github.io/css/style.min.css">
+
+    <link rel="icon" type="image/png" href="http://halochou.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://halochou.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    
+
+    <meta name="generator" content="Hugo 0.39" />
+  </head>
+
+  <body>
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="http://halochou.github.io/">
+      Yang Zhou
+    </a>
+    
+    <ul class="navigation-list float-right">
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="http://halochou.github.io/posts/">Blog</a>
+      </li>
+      
+      <li class="navigation-item">
+        <a class="navigation-link" href="http://halochou.github.io/about/">About</a>
+      </li>
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+  <article>
+    <header>
+      <h1 class="title">Share VPN connection in Ubuntu</h1>
+      <h2 class="date">February 24, 2014</h2>
+    </header>
+
+    
+
+<h1 id="background">Background</h1>
+
+<ol>
+<li>Company&rsquo;s VPN client doesn&rsquo;t support Mac OSX.</li>
+<li>Other VPN offered is slow.</li>
+<li>To use VPN, I set up a Ubuntu virtual machine in VMWare.</li>
+<li>Ubuntu uses VPN access company intranet and acts as a PPTP VPN server.</li>
+<li>Mac OSX connected to Ubuntu to access the intranet.</li>
+</ol>
+
+<h1 id="environment">Environment</h1>
+
+<ul>
+<li>Ubuntu 13.04 Server</li>
+<li>eth0 inet addr:192.168.1.149  Bcast:192.168.1.255  Mask:255.255.255.0    #WAN, Bridged network in VMWare.</li>
+<li>tun0 inet addr:9.125.1.86  P-t-P:9.125.1.86  Mask:255.255.255.255    #Company VPN Tunnel</li>
+<li>ppp0 inet addr:192.168.1.149  P-t-P:192.168.10.1  Mask:255.255.255.255    #Private VPN</li>
+</ul>
+
+<h1 id="server-setup">Server Setup</h1>
+
+<p>Install agnclient.</p>
+
+<p>Install pptpd software.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">apt-get install pptpd</pre></div>
+<p>Modifiy the configuration.
+<code>9.0.148.50</code> &amp; <code>9.0.146.50</code> are DNS of company intranet.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">echo “localip 192.169.1.149” &gt;&gt;; /etc/pptpd.conf
+echo “remoteip 192.169.10.1” &gt;&gt; /etc/pptpd.conf
+echo “ms-dns 9.0.148.50” &gt;&gt; /etc/ppp/pptpd-options
+echo “ms-dns 9.0.146.50” &gt;&gt; /etc/ppp/pptpd-options
+echo “username pptpd password 192.168.10.1” &gt;&gt; /etc/ppp/chap-secrets</pre></div>
+<p>Restart the pptpd service.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">service pptpd restart</pre></div>
+<p>Turn on ipv4 forward.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">echo &#34;net.ipv4.ip_forward=1&#34; &gt;&gt; /etc/sysctl.conf
+echo &#34;net.netfilter.nf_conntrack_acct=1&#34; &gt;&gt; /etc/sysctl.conf
+sysctl -p</pre></div>
+<p>Add iptables rules.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">iptables -A FORWARD -i ppp0 -o tun0 -j ACCEPT
+iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE</pre></div>
+<h1 id="client-setup">Client Setup</h1>
+
+<ol>
+<li>Add a VPN in <code>System Preferences</code>-&gt;<code>Network</code></li>
+<li><code>Server Address</code>: 192.168.1.149</li>
+<li><code>Account Name</code>: username</li>
+<li>Fill password in <code>Authentication Settings...</code></li>
+<li>Add <code>ibm.com</code>to VPN DNS <code>Search Domains</code> in <code>Advanced...</code></li>
+<li>Copy <code>ip-up</code>&amp;<code>ip-down</code> to <code>/etc/ppp</code> to add route automatically.</li>
+<li>Connect to VPN.</li>
+</ol>
+
+<p>~~ Issue Known ~~</p>
+
+<p><del>When VPN connected, Only intranet can be accessed.</del></p>
+
+<p><del>You need to disconnect VPN to access Internet.</del></p>
+
+<p><del>I&rsquo;ll dive into this issue later.</del></p>
+
+<p>Done.</p>
+
+  </article>
+</section>
+
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    © 2014 · Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>
